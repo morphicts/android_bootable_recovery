@@ -97,13 +97,19 @@ $(inc) : $(inc_dep_file)
 	$(hide) $(foreach lib,$(libs),echo "  Register_$(lib)();" >> $@;)
 	$(hide) echo "}" >> $@
 
-$(call intermediates-dir-for,EXECUTABLES,updater,,,$(TARGET_PREFER_32_BIT))/updater.o : $(inc)
+#$(call intermediates-dir-for,EXECUTABLES,updater,,,$(TARGET_PREFER_32_BIT))/updater.o : $(inc)
+ifeq ($(TARGET_ARCH),arm64)
+$(call intermediates-dir-for,EXECUTABLES,updater,,,32)/updater.o : $(inc)
+else
+$(call intermediates-dir-for,EXECUTABLES,updater)/updater.o : $(inc)
+endif
 LOCAL_C_INCLUDES += $(dir $(inc))
 
 inc :=
 inc_dep_file :=
 
 LOCAL_MODULE := updater
+LOCAL_32_BIT_ONLY := true
 
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 

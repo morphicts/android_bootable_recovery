@@ -66,6 +66,10 @@ int Log_Offset;
 bool datamedia;
 twrpDU du;
 
+extern "C" {
+	extern int gSdkVersion;
+};
+
 static void Print_Prop(const char *key, const char *name, void *cookie) {
 	printf("%s=%s\n", key, name);
 }
@@ -175,6 +179,16 @@ int main(int argc, char **argv) {
 #else
 	gui_warn("no_selinux=No SELinux support (no libselinux).");
 #endif
+
+	// TS
+	{
+		string sdkverstr = TWFunc::System_Property_Get("ro.build.version.sdk");
+		if (!sdkverstr.empty()) {
+			gSdkVersion = atoi(sdkverstr.c_str());
+			gSdkVersion = (gSdkVersion != 0) ? gSdkVersion : 23;
+		}
+		printf("SDK Version is %d\n", gSdkVersion);
+	}	
 
 	PartitionManager.Mount_By_Path("/cache", true);
 

@@ -1497,6 +1497,7 @@ int GUIAction::adbsideload(std::string arg __unused)
 	} else {
 		gui_msg("start_sideload=Starting ADB sideload feature...");
 		bool mtp_was_enabled = TWFunc::Toggle_MTP(false);
+		TWFunc::SetPerformanceMode(true); // TS
 
 		// wait for the adb connection
 		int ret = apply_from_adb("/", &sideload_child_pid);
@@ -1534,6 +1535,9 @@ int GUIAction::adbsideload(std::string arg __unused)
 		TWFunc::Toggle_MTP(mtp_was_enabled);
 		reinject_after_flash();
 		operation_end(ret);
+
+		TWFunc::SetPerformanceMode(false); // TS
+		PartitionManager.Update_System_Details(); // TS
 	}
 	return 0;
 }
@@ -1559,6 +1563,8 @@ int GUIAction::adbsideloadcancel(std::string arg __unused)
 	waitpid(sideload_child_pid, &status, 0);
 	sideload_child_pid = 0;
 	DataManager::SetValue("tw_page_done", "1"); // For OpenRecoveryScript support
+
+	PartitionManager.Update_System_Details(); // TS
 	return 0;
 }
 

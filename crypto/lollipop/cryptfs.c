@@ -850,13 +850,23 @@ static int hexdigit (char c)
     return -1;
 }
 
+// TS
+int gSdkVersion = 23;
+
 static unsigned char* convert_hex_ascii_to_key(const char* master_key_ascii,
                                                unsigned int* out_keysize)
 {
     unsigned int i;
+    size_t size = strlen (master_key_ascii);
+
+	if (gSdkVersion >= 23) // >= Android M
+	{
+		*out_keysize = (unsigned int)size;
+		return strdup(master_key_ascii);
+	}
+
     *out_keysize = 0;
 
-    size_t size = strlen (master_key_ascii);
     if (size % 2) {
         printf("Trying to convert ascii string of odd length\n");
         return NULL;

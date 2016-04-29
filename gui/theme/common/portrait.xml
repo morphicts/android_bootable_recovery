@@ -3209,7 +3209,8 @@
 			</button>
 
 			<button style="main_button">
-				<placement x="%indent%" y="%row19_y%"/>
+				<placement x="%indent%" y="%row8_y%"/>
+				<!--<placement x="%indent%" y="%row19_y%"/>-->
 				<text>{@adb_sideload_btn=ADB Sideload}</text>
 				<action function="page">sideload</action>
 			</button>

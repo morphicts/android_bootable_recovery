@@ -744,6 +744,8 @@ extern "C" int gui_init(void)
 		PageManager::ReleasePackage("splash");
 	}
 
+	usleep(7000000); // 7sec. TS
+
 	ev_init();
 	return 0;
 }
